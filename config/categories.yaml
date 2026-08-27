@@ -1,0 +1,31 @@
+# How much each category matters to you personally.
+# Used in Stage 11 ranking: interest is 30% of the final score.
+# 0.0 removes a category from the digest entirely.
+
+interests:
+  android: 1.0
+  kotlin: 1.0
+  artificial-intelligence: 0.9
+  developer-tools: 0.85
+  open-source: 0.8
+  cybersecurity: 0.7
+  hardware: 0.5
+  technology: 0.45
+  other: 0.3
+
+# Stories below this final score never reach the digest.
+minimum_score: 38
+
+# Digest shape.
+must_know: 3
+also_worth_knowing: 5
+
+# Event types you always want to see, regardless of category weight.
+# A vulnerability in something you use matters even on a quiet day.
+always_surface:
+  - vulnerability
+  - deprecation
+
+# Event types that rarely deserve space.
+deprioritise:
+  - funding

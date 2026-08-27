@@ -1,0 +1,118 @@
+# Feed sources for the tech context digest.
+#
+# archive_strategy controls how the backfill reaches back 12 months:
+#   wordpress  -> feed_url?paged=2,3,4...
+#   blogger    -> feed_url?start-index=26&max-results=25
+#   sitemap    -> parse sitemap_url for historical URLs
+#   none       -> only whatever the live feed currently carries
+#
+# reliability_score (0-100) is used later when picking a primary source
+# for an event. Official company blogs rank highest.
+
+sources:
+
+  # ---- Android / Kotlin ----
+
+  - name: Android Developers Blog
+    domain: android-developers.googleblog.com
+    category: android
+    source_type: rss
+    feed_url: https://android-developers.googleblog.com/feeds/posts/default
+    archive_strategy: blogger
+    reliability_score: 95
+
+  - name: Kotlin Blog
+    domain: blog.jetbrains.com
+    category: kotlin
+    source_type: rss
+    feed_url: https://blog.jetbrains.com/kotlin/feed/
+    archive_strategy: wordpress
+    reliability_score: 95
+
+  - name: Android Police
+    domain: androidpolice.com
+    category: android
+    source_type: rss
+    feed_url: https://www.androidpolice.com/feed/
+    archive_strategy: wordpress
+    reliability_score: 65
+
+  # ---- Developer tools / open source ----
+
+  - name: GitHub Blog
+    domain: github.blog
+    category: developer-tools
+    source_type: rss
+    feed_url: https://github.blog/feed/
+    archive_strategy: wordpress
+    reliability_score: 90
+
+  - name: JetBrains Blog
+    domain: blog.jetbrains.com
+    category: developer-tools
+    source_type: rss
+    feed_url: https://blog.jetbrains.com/feed/
+    archive_strategy: wordpress
+    reliability_score: 85
+
+  # ---- AI ----
+
+  - name: Google Research Blog
+    domain: research.google
+    category: artificial-intelligence
+    source_type: rss
+    feed_url: https://blog.research.google/feeds/posts/default
+    archive_strategy: blogger
+    reliability_score: 95
+
+  - name: Hugging Face Blog
+    domain: huggingface.co
+    category: artificial-intelligence
+    source_type: rss
+    feed_url: https://huggingface.co/blog/feed.xml
+    archive_strategy: none
+    reliability_score: 80
+
+  # ---- General tech press ----
+
+  - name: Ars Technica
+    domain: arstechnica.com
+    category: technology
+    source_type: rss
+    feed_url: https://feeds.arstechnica.com/arstechnica/index
+    archive_strategy: wordpress
+    reliability_score: 80
+
+  - name: The Verge
+    domain: theverge.com
+    category: technology
+    source_type: rss
+    feed_url: https://www.theverge.com/rss/index.xml
+    archive_strategy: none
+    reliability_score: 70
+
+  - name: TechCrunch
+    domain: techcrunch.com
+    category: technology
+    source_type: rss
+    feed_url: https://techcrunch.com/feed/
+    archive_strategy: wordpress
+    reliability_score: 65
+
+  # ---- Security ----
+
+  - name: Krebs on Security
+    domain: krebsonsecurity.com
+    category: cybersecurity
+    source_type: rss
+    feed_url: https://krebsonsecurity.com/feed/
+    archive_strategy: wordpress
+    reliability_score: 90
+
+  - name: Google Project Zero
+    domain: googleprojectzero.blogspot.com
+    category: cybersecurity
+    source_type: rss
+    feed_url: https://googleprojectzero.blogspot.com/feeds/posts/default
+    archive_strategy: blogger
+    reliability_score: 95
