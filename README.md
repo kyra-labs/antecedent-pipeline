@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/kyra-labs/antecedent-web-app/main/src/assets/logo_long_100px.svg" alt="Antecedent" height="100" />
+</p>
+
 <h3 align="center">Antecedent Pipeline</h3>
 <p align="center">
   The daily engine behind <a href="https://antecedent.kyralabs.dev/"><strong>Antecedent</strong></a> — it doesn't just collect tech news, it figures out how each story got here.
@@ -172,6 +176,12 @@ Required environment variables (also set as GitHub Actions secrets/variables for
 - **Hetzner CX23 VPS + web search augmentation** — a fallback layer for events where the DB-only archive doesn't yet have enough history, kept separate from the core structured-retrieval model rather than replacing it
 
 ---
+
+## Part of Kyra Labs
+
+<a href="https://github.com/kyra-labs">
+  <img src="https://raw.githubusercontent.com/kyra-labs/.github/main/profile/assets/kyra-labs-logo.png" alt="Kyra Labs" height="60" />
+</a>
 
 ## Related
 
