@@ -298,15 +298,22 @@ class LLMClient:
         if want_json:
             payload["response_format"] = {"type": "json_object"}
 
-        resp = self.session.post(
-            f"{self.provider.base_url}/chat/completions",
-            headers={
-                "Authorization": f"Bearer {self.provider.api_key}",
-                "Content-Type": "application/json",
-            },
-            json=payload,
-            timeout=self.timeout,
-        )
+        try:
+            resp = self.session.post(
+                f"{self.provider.base_url}/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {self.provider.api_key}",
+                    "Content-Type": "application/json",
+                },
+                json=payload,
+                timeout=self.timeout,
+            )
+        except requests.exceptions.RequestException as exc:
+            # Covers connect timeouts, read timeouts (e.g. a stalled stream
+            # mid-response), and dropped connections. Without this, these
+            # escape complete_json/complete_text's retry loop entirely and
+            # crash the whole pipeline instead of being retried.
+            raise LLMError(f"network error: {exc}") from exc
 
         if resp.status_code != 200:
             # Some gateways reject response_format. Retry once without it.
@@ -315,15 +322,18 @@ class LLMClient:
                 payload["messages"][0]["content"] = (
                     system + "\n\nRespond with a single JSON object and nothing else."
                 )
-                resp = self.session.post(
-                    f"{self.provider.base_url}/chat/completions",
-                    headers={
-                        "Authorization": f"Bearer {self.provider.api_key}",
-                        "Content-Type": "application/json",
-                    },
-                    json=payload,
-                    timeout=self.timeout,
-                )
+                try:
+                    resp = self.session.post(
+                        f"{self.provider.base_url}/chat/completions",
+                        headers={
+                            "Authorization": f"Bearer {self.provider.api_key}",
+                            "Content-Type": "application/json",
+                        },
+                        json=payload,
+                        timeout=self.timeout,
+                    )
+                except requests.exceptions.RequestException as exc:
+                    raise LLMError(f"network error: {exc}") from exc
             if resp.status_code != 200:
                 raise LLMError(f"HTTP {resp.status_code}: {resp.text[:300]}")
 
@@ -358,16 +368,20 @@ class LLMClient:
             "temperature": temperature,
         }
 
-        resp = self.session.post(
-            f"{self.provider.base_url}/messages",
-            headers={
-                "x-api-key": self.provider.api_key,
-                "anthropic-version": "2023-06-01",
-                "Content-Type": "application/json",
-            },
-            json=payload,
-            timeout=self.timeout,
-        )
+        try:
+            resp = self.session.post(
+                f"{self.provider.base_url}/messages",
+                headers={
+                    "x-api-key": self.provider.api_key,
+                    "anthropic-version": "2023-06-01",
+                    "Content-Type": "application/json",
+                },
+                json=payload,
+                timeout=self.timeout,
+            )
+        except requests.exceptions.RequestException as exc:
+            raise LLMError(f"network error: {exc}") from exc
+
         if resp.status_code != 200:
             raise LLMError(f"HTTP {resp.status_code}: {resp.text[:300]}")
 
